@@ -1,0 +1,127 @@
+19-06-2025
+===========
+1)You are given a string S and width W. Your task is to wrap the string into a paragraph of width.
+If the following string is given as input to the program:
+input:
+ABCDEFGHIJKLIMNOQRSTUVWXYZ
+4
+output:
+ABCD
+EFGH
+
+import textwrap
+S = "ABCDEFGHIJKLIMNOQRSTUVWXYZ"
+W = 4
+wrapped = textwrap.wrap(S, W)
+for line in wrapped:
+    print(line)
+
+========================================================
+2)You are given an integer, N. Your task is to print an alphabet rangoli of size N. (Rangoli is a form of Indian folk art based on creation of patterns.)
+Different sizes of alphabet rangoli are shown below:
+#size 3
+
+----c----
+--c-b-c--
+c-b-a-b-c
+--c-b-c--
+----c----
+import string
+
+def print_rangoli(size):
+    alphabet = string.ascii_lowercase
+    lines = []
+    
+    for i in range(size):
+        left = '-'.join(alphabet[size-1:i:-1])
+        right = '-'.join(alphabet[i:size])  
+        full = (left + '-' + right) if left else right
+        line = full.center(4*size - 3, '-')
+        lines.append(line)
+    
+    print('\n'.join(lines[::-1] + lines[1:]))
+
+print_rangoli(3)
+
+=========================================================
+3)You are given a date. Your task is to find what the day is on that date.
+A single line of input containing the space separated month, day and year, respectively, in MM DD YYYY format.
+08 05 2015
+import calendar
+
+
+month, day, year = map(int, input().split())
+day_name = calendar.day_name[calendar.weekday(year, month, day)]
+
+print(day_name.upper())
+
+=========================================================
+4)Given 2 sets of integers, M and N, print their symmetric difference in ascending order. The term symmetric difference indicates those values that exist in either M or N but do not exist in both.
+
+The first line of input contains an integer, M.The second line contains M space-separated integers.The third line contains an integer, N.The fourth line contains N space-separated integers.
+4
+2 4 5 9
+4
+2 4 11 12
+
+Output the symmetric difference integers in ascending order, one per line.
+5
+9
+11
+12
+
+m = int(input())
+set_m = set(map(int, input().split()))
+n = int(input())
+set_n = set(map(int, input().split()))
+
+sym_diff = set_m ^ set_n
+
+for num in sorted(sym_diff):
+    print(num)
+
+=========================================================
+5)Please write a program which accepts a string from console and print it in reverse order.
+Example: If the following string is given as input to the 
+Plain Text
+rise to vote sir
+
+input_str = input()
+print(input_str[::-1])
+
+========================================================
+6)Please write a program which accepts a string from console and print the characters that have even indexes.
+Example: If the following string is given as input to the program:
+H1e2l3l4o5w6o7r8l9d--helloworld
+
+input_str = input()
+print(input_str[::2])
+
+========================================================
+7)Write a program to solve a classic ancient Chinese puzzle: We count 35 heads and 94 legs among the chickens and rabbits in a farm. How many rabbits and how many chickens do we have?
+Hints
+Use for loop to iterate all possible solutions.
+
+# Total heads and legs
+total_heads = 35
+total_legs = 94
+
+# Try all possible values of chickens (0 to 35)
+for chickens in range(total_heads + 1):
+    rabbits = total_heads - chickens
+    legs = (chickens * 2) + (rabbits * 4)
+    
+    if legs == total_legs:
+        print(f"Chickens: {chickens}, Rabbits: {rabbits}")
+        break
+
+=========================================================
+8)With two given lists [1,3,6,78,35,55] and [12,24,35,24,88,120,155], write a program to make a list whose elements are intersection of the above given lists.
+list1 = [1, 3, 6, 78, 35, 55]
+list2 = [12, 24, 35, 24, 88, 120, 155]
+
+# Using set intersection
+intersection = list(set(list1) & set(list2))
+print(intersection)
+
+=========================================================

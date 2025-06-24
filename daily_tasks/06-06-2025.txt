@@ -1,0 +1,137 @@
+06-06-2025
+===========
+1)difference between pip and pep
+PIP (Pip Installs Packages)
+---------------------------
+What it is:
+pip is the default package manager for Python.
+
+Purpose:
+It is used to install, update, and remove Python packages from the Python Package Index (PyPI).
+
+Example usage:
+pip install numpy
+pip uninstall flask
+pip list
+
+PEP (Python Enhancement Proposal)
+---------------------------------
+What it is:
+A PEP is a design document that describes a new feature, improvement, or process for Python.
+
+Purpose:
+It allows the community and Python developers to discuss and standardize enhancements.
+
+Example:
+PEP 8: Python’s style guide for writing clean code.
+PEP 484: Introduced type hints in Python.
+PEP 572: Introduced the walrus operator (:=).
+=========================================================
+2)Custom exception 
+
+class ToosmallNumber(Exception):
+    pass 
+value = 3
+try :
+    if value < 5:
+        raise ToosmallNumber("Number is small")
+except ToosmallNumber as e:
+    print(e)
+=========================================================3)what is decarator
+def decorator(func):
+    def wrapper():
+        print("Before function call")
+        func()
+        print("After function call")
+    return wrapper
+ 
+@decorator
+def say_hello():
+    print("Hello, veeraswamy!")
+ 
+say_hello()
+=========================================================
+4)def append_to_list(value, lst=[]):
+    lst.append(value)
+    return lst
+print(append_to_list(1))
+print(append_to_list(2))
+print(append_to_list(3))
+
+what is the output:1
+                   1 2
+                   1 2 3
+=========================================================
+5)Mutable Default Argument
+funcs = [lambda x: x+i for i in range(3)]
+results = [f(10) for f in funcs]
+print(results)
+
+10,11,12
+=========================================================
+6)What’s the difference between is and ==?
+is operator compares the references
+operator is used for comparing the content
+=========================================================
+7)a=[1,0,5,0,6,2,0,9]
+  1,2,5,6,9,0,0,0 -----output i need
+  
+a=[1,0,5,0,6,2,0,9]
+b=[]
+c=[]
+for i in a:
+    if i==0:
+        c.append(i)
+    else:
+        b.append(i)
+print(sorted(b)+c)
+=========================================================
+8)nums = [1, 2, 3, 4]
+for num in nums:
+    if num % 2 == 0:
+        nums.remove(num)
+print(nums)
+
+1,3
+=========================================================
+9)print("abc" * 0)
+ nothing
+=========================================================
+10)inner class implementation
+class Outer:
+    class Inner:
+        def greet(self):
+            print("Hello from Inner")
+ 
+outer = Outer()
+inner = outer.Inner()
+inner.greet()
+=========================================================
+11)shallow and deep copy
+Changing the nested list inside shallow_copy also changes it in original because the nested list is shared.
+ 
+Nested objects are fully copied, so changes in deep_copy don’t affect original.
+=========================================================
+12)How do you fetch duplicate records (same name, same email) from a users table
+SELECT name, email, COUNT(*) FROM users GROUP BY name, email
+HAVING COUNT(*) > 1;
+=========================================================
+13)Find the second highest salary without limit
+select max(salary) from employee where salary<(select max(salary) from employee);
+========================================================
+14)order of execution
+   select,from,where, group by,order by
+=========================================================
+15)Find employees who logged in on 3 consecutive days
+SELECT DISTINCT e1.employee_id
+FROM employee_logins e1
+JOIN employee_logins e2 
+  ON e1.employee_id = e2.employee_id 
+  AND e2.login_date = DATE_ADD(e1.login_date, INTERVAL 1 DAY)
+JOIN employee_logins e3 
+  ON e1.employee_id = e3.employee_id 
+  AND e3.login_date = DATE_ADD(e1.login_date, INTERVAL 2 DAY)
+=========================================================
+
+ 
+ 

@@ -1,0 +1,103 @@
+05-06-2025
+==========
+1)def most_frequent(lst):
+    max_count = 0
+    most_common = None
+    for x in lst:
+        count = lst.count(x)
+        if count > max_count:
+            max_count = count
+            most_common = x
+    return most_common
+=======================================================
+2)Sum of Pairs Equal to Target
+li=[3,1,2,3,4,5,6,7,8]
+t=6
+le=len(li)
+for i in range(0,le+1):
+    for j in range(1,le+1):
+        if (i+j)==t:
+            print(i,j)
+======================================================
+3)sorting an array with only one loop
+ arr = [5, 2, 9, 1, 3]
+ i = 0
+ while i < len(arr) - 1:
+    if arr[i] > arr[i + 1]:
+        arr[i], arr[i + 1] = arr[i + 1], arr[i]
+        i = 0
+    else:
+        i += 1
+ 
+ print(arr)
+=========================================================
+4)Create a simple stored procedure and invoke it though python code
+
+DELIMITER //
+
+CREATE PROCEDURE GetAllCustomers()
+BEGIN
+    SELECT * FROM Customers;
+END //
+
+DELIMITER ;
+
+import mysql.connector
+
+# Connect to the MySQL database
+conn = mysql.connector.connect(
+    host="localhost",
+    user="root",
+    password="System@123#456",
+    database="clientinterview"
+)
+
+cursor = conn.cursor()
+
+# Call the stored procedure
+cursor.callproc('GetAllCustomers')
+
+# Process the results
+for result in cursor.stored_results():
+    rows = result.fetchall()
+    for row in rows:
+        print(row)
+
+# Clean up
+cursor.close()
+conn.close()
+========================================================
+5)List out the difference between current and previous version of python New features introduced in current version
+ 
+Print Statement vs Function
+Python 2: print "Hello"
+Python 3: print("Hello")
+
+Integer Division
+Python 2: 5 / 2 gives 2
+Python 3: 5 / 2 gives 2.5
+
+Unicode Handling
+Python 2: Strings are ASCII by default
+Python 3: Strings are Unicode by default
+
+xrange() vs range()
+Python 2: range() returns a list, xrange() for generators
+Python 3: range() returns a generator-like object
+
+Input Function
+Python 2: raw_input()
+Python 3: input() (always returns string)
+
+Exception Handling Syntax
+Python 2: except Exception, e:
+Python 3: except Exception as e:
+
+Library Support
+Python 2: Older libraries, now deprecated
+Python 3: Actively supported with modern libraries
+
+End of Life
+Python 2: Support ended in January 2020
+Python 3: Ongoing updates and improvements
+=========================================================

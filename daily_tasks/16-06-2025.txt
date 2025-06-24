@@ -1,0 +1,50 @@
+16-06-2025
+============
+1)Write a program to create a custom exception
+class AgeTooSmallError(Exception):
+    """Raised when the entered age is below the allowed limit."""
+    pass
+def validate_age(age):
+    if age < 18:
+        raise AgeTooSmallError("Age must be at least 18.")
+    else:
+        print("Age is valid!")
+try:
+    user_age = int(input("Enter your age: "))
+    validate_age(user_age)
+except AgeTooSmallError as e:
+    print("Custom Exception Caught:", e)
+except ValueError:
+    print("Invalid input. Please enter a number.")
+=======================================================
+2)"s=""hello""
+print(s[2])
+print(s[-2])
+s=""python""
+print(s[-7])
+=======================================================
+3)t1->11111 null null
+t2-> 1112 null
+if we perform inner join what will be the output
+
+none
+========================================================
+4)repartition in pyspark
+In PySpark, repartition() is used to increase or change the number of partitions of a DataFrame or RDD. This is important for optimizing performance, especially in distributed data processing.
+
+df = spark.read.csv("data.csv")
+print(df.rdd.getNumPartitions())  # Original partitions
+
+df_repart = df.repartition(8)
+print(df_repart.rdd.getNumPartitions())  # New partition count
+========================================================
+5)5 problem based on subqueries
+
+Find employees who earn the highest salary in the company.
+List all customers who have not placed any orders.
+Find products whose price is greater than all products in category 'Electronics'.
+Retrieve employees whose salary is above the average salary of all employees.
+Find department names where the number of employees is more than 3.
+========================================================
+
+ 

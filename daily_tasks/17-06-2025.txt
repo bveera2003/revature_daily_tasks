@@ -1,0 +1,121 @@
+17-06-2025
+==========
+The table columns are:
+employees: emp_id, emp_name, dept_id, salary, hire_date
+departments: dept_id, dept_name, location
+projects: project_id, emp_id, project_name, start_date
+
+Question 1: Find Employees Earning More Than Their Department’s Average Salary
+SELECT e.emp_id, e.emp_name, e.salary, e.dept_id
+FROM employees e
+JOIN (
+    SELECT dept_id, AVG(salary) AS avg_salary
+    FROM employees
+    GROUP BY dept_id
+) dept_avg ON e.dept_id = dept_avg.dept_id
+WHERE e.salary > dept_avg.avg_salary;
+========================================================
+ 
+Question 2: Find Employees Who Worked on All Projects in Their Department
+SELECT e.emp_id, e.emp_name
+FROM employees e
+WHERE NOT EXISTS (
+    SELECT p.project_id
+    FROM projects p
+    JOIN employees ep ON p.emp_id = ep.emp_id
+    WHERE ep.dept_id = e.dept_id
+    EXCEPT
+    SELECT p2.project_id
+    FROM projects p2
+    WHERE p2.emp_id = e.emp_id
+);
+========================================================
+ 
+Question 3: Find the Highest-Paid Employee in Each Department Who Started After 2020
+SELECT dept_id, emp_id, emp_name, salary
+FROM (
+    SELECT emp_id, emp_name, dept_id, salary,
+           RANK() OVER (PARTITION BY dept_id ORDER BY salary DESC) AS rnk
+    FROM employees
+    WHERE hire_date > '2020-12-31'
+) ranked
+WHERE rnk = 1;
+======================================================
+ 
+Question 4: Find Departments Where All Employees Earn Above a Certain Threshold
+SELECT d.dept_id, d.dept_name
+FROM departments d
+WHERE NOT EXISTS (
+    SELECT 1
+    FROM employees e
+    WHERE e.dept_id = d.dept_id AND e.salary <= 50000
+);
+
+=======================================================
+The table columns are:
+Orders: order_id, customer_id, order_date, total_amount
+Customers: customer_id,	customer_name,	region
+order_details:detail_id	order_id, product_id,quantity	unit_price
+
+products:product_id	product_name	category
+
+Question 1: Find Customers Whose Total Order Amount Exceeds the Average Order Amount in Their RegionSELECT c.customer_id, c.customer_name, c.region, SUM(o.total_amount) AS total_spent
+FROM customers c
+JOIN orders o ON c.customer_id = o.customer_id
+GROUP BY c.customer_id, c.customer_name, c.region
+HAVING SUM(o.total_amount) >
+(
+    SELECT AVG(region_total)
+    FROM (
+        SELECT c2.region, SUM(o2.total_amount) AS region_total
+        FROM customers c2
+        JOIN orders o2 ON c2.customer_id = o2.customer_id
+        GROUP BY c2.customer_id, c2.region
+    ) regional_totals
+    WHERE regional_totals.region = c.region
+);
+=======================================================
+ 
+Question 2: Find Orders Containing Products from All Categories
+SELECT o.order_id
+FROM orders o
+JOIN order_details od ON o.order_id = od.order_id
+JOIN products p ON od.product_id = p.product_id
+GROUP BY o.order_id
+HAVING COUNT(DISTINCT p.category) = (
+    SELECT COUNT(DISTINCT category) FROM products
+);
+======================================================
+ 
+Question 3: Find the Most Expensive Product Ordered by Each Customer After a Specific Date
+SELECT customer_id, customer_name, product_id, product_name, max_price
+FROM (
+    SELECT 
+        c.customer_id,
+        c.customer_name,
+        p.product_id,
+        p.product_name,
+        od.unit_price,
+        RANK() OVER (PARTITION BY c.customer_id ORDER BY od.unit_price DESC) AS rnk
+    FROM orders o
+    JOIN customers c ON o.customer_id = c.customer_id
+    JOIN order_details od ON o.order_id = od.order_id
+    JOIN products p ON od.product_id = p.product_id
+    WHERE o.order_date > '2024-01-01'
+) ranked_products
+WHERE rnk = 1;
+=======================================================
+ 
+Question 4: Find Regions Where No Customer Ordered a Specific Product
+SELECT DISTINCT c.region
+FROM customers c
+WHERE c.region NOT IN (
+    SELECT DISTINCT c2.region
+    FROM customers c2
+    JOIN orders o ON c2.customer_id = o.customer_id
+    JOIN order_details od ON o.order_id = od.order_id
+    JOIN products p ON od.product_id = p.product_id
+    WHERE p.product_name = 'Laptop'
+);
+ 
+========================================================

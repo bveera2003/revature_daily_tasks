@@ -1,0 +1,231 @@
+30-05-2024
+==========
+1)what is subscriber client in asynchronous mode?
+
+subscriber client in asynchronous mode means first you register a call back function.That will handle incoming messages.so this function is called each and every time when new message comes.
+========================================================
+2)input1 a =[1,2,3]
+input2 b=[4,5,6]
+  output c=[1,2,3,4,5,6]
+  
+  a=[1,2,3]
+  b=[4,5,6]
+  c=a+b
+  print(c)
+=========================================================
+3)2*2 matrix get the input from the user input should be a prime number
+
+  import numpy as np
+def isPrime(n):
+    count=0
+    if n>1:
+        for i in range(1,n+1):
+            if n%i==0:
+                count+=1 
+        if count==2:
+            return True
+        else:
+            return False
+    else:
+        print("Enter greater than 1")
+count=4
+primes=[]
+while count!=len(primes):
+    number=int(input("enter number:"))
+    result=isPrime(number)
+    if result:
+        primes.append(number)
+    else:
+        print("Enter a another number:")
+array=np.array(primes)
+array=array.reshape(2,2)
+print(array)
+========================================================
+4)given year is leap year or not
+
+year=int(input("Enter a year::"))
+if ((year%4==0) & (year%400==0)) | year%100!=0:
+    print("Leap year")
+else:
+    print("Not a leap year")
+========================================================
+5)if the original matrix and transpose matrix are same print same else not same.
+
+import numpy as np
+arr1=np.array([[1,2],[3,4]])
+arr2=np.zeros([2,2])
+for i in range(2):
+    for j in range(2):
+        arr2[j,i]=arr1[i,j]
+if np.array_equal(arr1,arr2):
+    print("same because all elements are identical")
+else:
+    print("not same")
+=========================================================
+6)read a number and convert into the binary
+
+number=int(input("Enter a number::"))
+result=bin(number)
+print(result)
+=========================================================
+7)Write a function to find the longest common prefix string amongst an array of strings.
+ If there is no common prefix, return an empty string "".
+ Example 1:
+ Input: ["flower","flow","flight"]
+ Output: "fl"
+ Example 2: 
+Input: ["dog","racecar","car"]
+Output: ""
+Explanation: There is no common prefix among the input strings.
+Note:
+All given inputs are in lowercase letters a-z.
+
+def long_prefix(strs):
+    if not strs:
+        return ""
+    prefix = strs[0]
+    for s in strs[1:]:
+        while not s.startswith(prefix):
+            prefix = prefix[:-1]
+            if not prefix:
+                return ""
+    return prefix
+l=["flower","flow","flight"]
+result=long_prefix(l)
+print(result)
+=========================================================
+8)Input: s = "aa", p = "a"Output: falseExplanation: "a" does not match the entire string "aa".
+Input: s = "aa", p = "a*"Output: trueExplanation: '*' means zero or more of the preceding element, 'a'. Therefore, by repeating 'a' once, it becomes "aa".
+Input: s = "ab", p = ".*"Output: trueExplanation: ".*" means "zero or more (*) of any character (.)".
+
+def is_match(s: str, p: str) -> bool:
+    m, n = len(s), len(p)
+    # dp[i][j] = whether s[0..i-1] matches p[0..j-1]
+    dp = [[False] * (n + 1) for _ in range(m + 1)]
+    dp[0][0] = True 
+
+    for j in range(2, n + 1):
+        if p[j - 1] == '*':
+            dp[0][j] = dp[0][j - 2]
+
+    for i in range(1, m + 1):
+        for j in range(1, n + 1):
+            if p[j - 1] == '.' or p[j - 1] == s[i - 1]:	                		dp[i][j] = dp[i - 1][j - 1]
+            elif p[j - 1] == '*':
+                dp[i][j] = dp[i][j - 2]
+                if p[j - 2] == '.' or p[j - 2] == s[i - 1]:
+                    dp[i][j] |= dp[i - 1][j]
+
+    return dp[m][n]
+print(is_match("aa", "a"))
+=========================================================
+9)Input: arr = [4,2,1,3]
+Output: [[1,2],[2,3],[3,4]]
+Explanation: The minimum absolute difference is 1. List all pairs with difference equal to 1 in ascending order.
+Example 2:
+ 
+Input: arr = [1,3,6,10,15]
+Output: [[1,3]]
+Example 3:
+ 
+Input: arr = [3,8,-10,23,19,-4,-14,27]
+Output: [[-14,-10],[19,23],[23,27]]
+
+def abs_difference(arr):
+    arr.sort()  
+    min_diff = float('inf')
+    
+    result = []
+
+    for i in range(1, len(arr)):
+        diff = arr[i] - arr[i - 1]
+        if diff < min_diff:
+            min_diff = diff
+            result = [[arr[i - 1], arr[i]]]
+        elif diff == min_diff:
+            result.append([arr[i - 1], arr[i]])
+
+    return result
+print(abs_difference([4, 2, 1, 3]))
+=======================================================
+10)Input: n = 234
+Output: 15 
+Explanation: 
+Product of digits = 2 * 3 * 4 = 24 
+Sum of digits = 2 + 3 + 4 = 9 
+Result = 24 - 9 = 15
+
+number=int(input("Enter a number::"))
+product=1
+sum=0
+while number>0:
+    digit=number%10
+    product*=digit
+    sum+=digit
+    number=int(number/10)
+print(product-sum)
+
+=========================================================
+11)Input: nums = [1,2,3,3,4,4,5,6], k = 4
+Output: true
+Explanation: Array can be divided into [1,2,3,4] and [3,4,5,6].
+Example 2:
+ 
+Input: nums = [3,2,1,2,3,4,3,4,5,9,10,11], k = 3
+Output: true
+Explanation: Array can be divided into [1,2,3] , [2,3,4] , [3,4,5] and [9,10,11].
+Example 3:
+ 
+Input: nums = [3,3,2,2,1,1], k = 3
+Output: true
+
+from collections import Counter
+
+def is_possible_divide(nums, k):
+    if len(nums) % k != 0:
+        return False
+
+    freq = Counter(nums)
+    for num in sorted(freq):
+        while freq[num] > 0:
+            # Try to form a group starting from num to num+k-1
+            for i in range(k):
+                if freq[num + i] <= 0:
+                    return False
+                freq[num + i] -= 1
+
+    return True
+nums = [1,2,3,3,4,4,5,6] 
+k = 4
+print(is_possible_divide(nums,k))
+=========================================================
+12)Input: ["a==b","b!=a"]
+Output: false
+Explanation: If we assign say, a = 1 and b = 1, then the first equation is satisfied, but not the second.  There is no way to assign the variables to satisfy both equations.
+
+def equations_possible(equations):
+    parent = [i for i in range(26)] 
+
+    def find(x):
+        if parent[x] != x:
+            parent[x] = find(parent[x]) 
+        return parent[x]
+
+    def union(x, y):
+        parent[find(x)] = find(y)
+
+    
+    for eq in equations:
+        if eq[1:3] == "==":
+            union(ord(eq[0]) - ord('a'), ord(eq[3]) - ord('a'))
+
+    
+    for eq in equations:
+        if eq[1:3] == "!=":
+            if find(ord(eq[0]) - ord('a')) == find(ord(eq[3]) - ord('a')):
+                return False
+
+    return True
+print(equations_possible(["a==b", "b!=a"]))
+=======================================================
+
