@@ -1,0 +1,187 @@
+27-06-2025
+============
+The movies table columns are:
+id,  title,  director,  year,  length_minutes.
+
+1)Find the title of each film 
+select Title from Movies;
+
+2)Find the director of each film
+select director from Movies;
+
+3)Find the title and director of each film
+select title,director from movies;
+
+4)Find the title and year of each film
+select title,year from movies;
+
+5)Find all the information about each film
+select * from movies;
+
+6)Find the movie with a row id of 6 
+select * from Movies where id=6;
+
+7)Find the movies released in the years between 2000 and 2010 
+select * from movies where year>=2000 and year<=2010
+
+8)Find the movies not released in the years between 2000 and 2010 
+select * from movies where year not between 2000 and 2010;
+
+9)Find the first 5 Pixar movies and their release year
+select title,year from movies limit 5;
+
+10)Find all the Toy Story movies
+SELECT * FROM Movies where Title in('Toy Story','Toy Story 2','Toy Story 3');
+
+11)Find all the movies directed by John Lasseter
+select Title from movies where director='John Lasseter';
+
+12)Find all the movies (and director) not directed by John Lasseter
+select title,director from movies where director!='John Lasseter'
+
+13)Find all the WALL-* movies
+select * from movies where title in('WALL-G','WALL-E');
+
+14)List all directors of Pixar movies (alphabetically), without duplicates
+SELECT distinct director from movies order by director;
+
+15)List the last four Pixar movies released (ordered from most recent to least) 
+select title from movies order by year desc limit 4;
+
+16)List the first five Pixar movies sorted alphabetically
+select title from movies order by title limit 5;
+
+17)List the next five Pixar movies sorted alphabetically 
+select title from movies order by title limit 5 offset 5;
+
+18)Find the number of movies each director has directed
+select director,count(*) as count from movies group by director;
+
+19)Find the total domestic and international sales that can be attributed to each director 
+select m.director,sum(domestic_sales)+sum(international_sales) from boxoffice b join movies m on b.movie_id=m.id group by m.director;
+
+20)Add the studio's new production, Toy Story 4 to the list of movies (you can use any director)
+insert into Movies(Title,Director,Year,Length_minutes) values ('Toy Story 4','John Lasseter',2000,120);
+
+21)Toy Story 4 has been released to critical acclaim! It had a rating of 8.7, and made 340 million domestically and 270 million internationally. Add the record to the BoxOffice table. 
+insert into boxoffice(Movie_id,Rating,Domestic_sales,International_sales) values (15,8.7,340*1000000,270*1000000);
+
+22)The director for A Bug's Life is incorrect, it was actually directed by John Lasseter 
+update Movies set Director='John Lasseter' where id=2;
+
+23)The year that Toy Story 2 was released is incorrect, it was actually released in 1999
+update Movies set Year=1999 where id=3;
+
+24)Both the title and director for Toy Story 8 is incorrect! The title should be "Toy Story 3" and it was directed by Lee Unkrich
+update Movies set Director='Lee Unkrich',Title='Toy Story 3' where id=11;
+
+25)This database is getting too big, lets remove all movies that were released before 2005.
+delete from Movies where Year<=2005;
+
+26)Andrew Stanton has also left the studio, so please remove all movies directed by him
+delete from Movies where Director='Andrew Stanton'; 
+
+========================================================
+The north_american_cities table columns are:
+city,  country,  population,  latitude,  longitude
+
+1)List all the Canadian cities and their populations
+SELECT city,population from north_american_cities where country='Canada';
+
+2)Order all the cities in the United States by their latitude from north to south 
+select city,latitude from north_american_cities where country='United States' order by latitude desc;
+
+3)List all the cities west of Chicago, ordered from west to east 
+SELECT city, country, population, latitude, longitude FROM north_american_cities WHERE longitude < -87.629798 ORDER BY longitude;
+
+4)List the two largest cities in Mexico (by population) 
+select city from north_american_cities where country='Mexico' order by population desc limit 2;
+
+5)List the third and fourth largest cities (by population) in the United States and their population 
+select city,population from north_american_cities where country='United States' order by population desc limit 2 offset 2;
+=======================================================
+The movies table columns are:
+id, title, director, year, length_minutes
+The box-office table columns are:
+movie_id, rating, domestic_sales, international_sales
+
+1)Find the domestic and international sales for each movie
+select m.title,b.domestic_sales,b.international_sales from boxoffice b join Movies m on b.movie_id=m.id;
+
+2)Show the sales numbers for each movie that did better internationally rather than domestically 
+select m.title,b.international_sales,b.domestic_sales from Movies m join boxoffice b on m.id=b.movie_id where b.international_sales>b.domestic_sales;
+
+3)List all the movies by their ratings in descending order
+select m.title,b.rating from movies m join boxoffice b on m.id=b.movie_id order by b.rating desc;
+
+4)List all movies and their combined sales in millions of dollars 
+SELECT m.title,movie_id,rating, (domestic_sales + international_sales) / 1000000 AS combined_sales_millions FROM boxoffice b join movies m on m.id=b.movie_id;
+
+5)List all movies and their ratings in percent
+SELECT Title, round((Rating/10),2)*100 as Ratings from Movies 
+inner join Boxoffice
+on Movies.Id = Boxoffice.Movie_id order by Ratings desc;
+
+6)List all movies that were released on even number years
+Select title from movies where year%2==0;
+========================================================
+The buildings table columns are:
+building_name	capacity
+The employees  table columns are:
+role	name	building	years_employed
+
+1)Find the list of all buildings that have employees
+select distinct building from employees;
+
+2)Find the list of all buildings and their capacity
+select * from buildings;
+
+3)List all buildings and the distinct employee roles in each building (including empty buildings)
+select distinct building_name,Role from buildings b left join employees e on b.building_name=e.building;
+
+4)Find the name and role of all employees who have not been assigned to a building 
+select name,role from employees where Building is null;
+
+5)Find the names of the buildings that hold no employees 
+select building_name from buildings left join employees on buildings.building_name=employees.building where name is null;
+========================================================
+The employees table columns are:
+role	name	building	years_employed
+
+1)Find the longest time that an employee has been at the studio
+select * from Employees where years_employed=(select max(years_employed) from employees);
+
+2)For each role, find the average number of years employed by employees in that role
+select role,avg(years_employed) from Employees group by role;
+
+3)Find the total number of employee years worked in each building 
+select building,sum(years_employed) from employees group by building;
+
+4)Find the number of Artists in the studio (without a HAVING clause)
+select role,count(*) from employees where role='Artist';
+
+5)Find the number of Employees of each role in the studio 
+select role,count(*) from employees group by role;
+
+6)Find the total number of years employed by all Engineers 
+select sum(years_employed) from employees where role='Engineer';
+======================================================
+1)Create a new table named Database with the following columns:
+– Name A string (text) describing the name of the database
+– Version A number (floating point) of the latest version of this database
+– Download_count An integer count of the number of times this database was downloaded
+This table has no constraints. 
+
+create table Database(Name varchar,Version float,Download_count int);
+
+2)Add a column named Aspect_ratio with a FLOAT data type to store the aspect-ratio each movie was released in.
+alter table Movies add column Aspect_ratio float;
+
+3)Add another column named Language with a TEXT data type to store the language that the movie was released in. Ensure that the default for this language is English.
+alter table Movies add column Language varchar default 'English';
+
+4)We've sadly reached the end of our lessons, lets clean up by removing the Movies table
+drop table Movies;
+
+5)And drop the BoxOffice table as well
+drop table BoxOffice;
